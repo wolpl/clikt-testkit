@@ -1,0 +1,28 @@
+name: Build Gradle project
+
+on:
+  push:
+    branches:
+      - "**"
+    tags-ignore:
+      - snapshot
+      - v*
+  pull_request:
+    branches:
+      - "**"
+    tags-ignore:
+      - snapshot
+      - v*
+
+jobs:
+  build-gradle-project:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build
+        cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/development' }}
