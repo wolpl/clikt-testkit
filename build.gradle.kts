@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.wolpl.clikt-testkit"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
