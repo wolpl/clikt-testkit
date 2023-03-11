@@ -1,4 +1,5 @@
-[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.wolpl/clikt-testkit?label=latest%20snapshot&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/wolpl/clikt-testkit/)
+[![Maven Central](https://img.shields.io/maven-central/v/com.wolpl.clikt-testkit/clikt-testkit)](https://central.sonatype.com/artifact/com.wolpl/clikt-testkit/1.0.0/versions)
+[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.wolpl.clikt-testkit/clikt-testkit?label=latest%20snapshot&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/wolpl/clikt-testkit/)
 
 # Clikt Testkit
 
@@ -27,14 +28,14 @@ Compared to testing with vanilla Clikt, you benefit from
 
 ## Usage
 Clikt Testkit is published through Maven Central.
-You can include it in your Gradle project like so:
+You can include it in your Gradle project by adding this dependency:
 ```kotlin
 dependencies {
-    implementation("com.wolpl:clikt-testkit:1.0.0")
+    implementation("com.wolpl.clikt-testkit:clikt-testkit:1.0.0")
 }
 ```
 
-For instructions how to test your CliktCommands, please refer to the [documentation](https://wolpl.github.io/clikt-testkit/).
+For instructions how to implement tests, please refer to the [Clikt Testkit documentation](https://wolpl.github.io/clikt-testkit/).
 
 ## Multiplatform Support
 Clikt Testkit is a Kotlin Multiplatform library, currently supporting these targets:

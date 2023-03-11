@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.nexus.publish)
 }
 
-group = "com.wolpl"
+group = "com.wolpl.clikt-testkit"
 version = "1.0.0-SNAPSHOT"
 
 repositories {
@@ -61,9 +61,12 @@ nexusPublishing {
     }
 }
 
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
 publishing {
     publications.withType<MavenPublication>() {
-
         pom {
             name.set("Clikt Testkit")
             description.set("Testing functions for the Clikt command line parser library.")
@@ -85,6 +88,7 @@ publishing {
                 url.set("https://github.com/wolpl/clikt-testkit")
             }
         }
+        artifact(javadocJar)
     }
 }
 
