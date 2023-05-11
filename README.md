@@ -1,5 +1,5 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.wolpl.clikt-testkit/clikt-testkit)](https://central.sonatype.com/artifact/com.wolpl/clikt-testkit/1.0.0/versions)
-[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.wolpl.clikt-testkit/clikt-testkit?label=latest%20snapshot&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/wolpl/clikt-testkit/)
+[![Maven Central](https://img.shields.io/maven-central/v/com.wolpl.clikt-testkit/clikt-testkit)](https://central.sonatype.com/artifact/com.wolpl.clikt-testkit/clikt-testkit/1.0.0/versions)
+[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/com.wolpl.clikt-testkit/clikt-testkit?label=latest%20snapshot&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/wolpl/clikt-testkit/clikt-testkit/)
 
 # Clikt Testkit
 
