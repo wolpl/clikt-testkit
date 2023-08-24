@@ -4,6 +4,7 @@ import arrow.fx.coroutines.resourceScope
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.mordant.terminal.Terminal
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.filterNotNull
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.first
 @DslMarker
 annotation class CliktTestDsl
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 @CliktTestDsl
 suspend fun CliktCommand.test(
     argv: List<String>,
@@ -23,8 +24,8 @@ suspend fun CliktCommand.test(
     coroutineScope {
         resourceScope {
 
-            val testConsole = TestConsole()
-            val testScope = MutableCliTestScope(testConsole)
+            val testTerminalImpl = TestTerminalInterfaceImpl()
+            val testScope = MutableCliTestScope(testTerminalImpl)
 
             val cliContext = install(
                 { newSingleThreadContext("clikt-testkit-cli-context") },
@@ -35,13 +36,13 @@ suspend fun CliktCommand.test(
                 try {
                     this@test
                         .context {
-                            console = testConsole
+                            this.terminal = Terminal(testTerminalImpl)
                             envvarReader = environmentVariables::get
                         }
                         .parse(argv)
-                    testConsole.terminate(0)
+                    testTerminalImpl.terminate(0)
                 } catch (programResult: ProgramResult) {
-                    testConsole.terminate(programResult.statusCode)
+                    testTerminalImpl.terminate(programResult.statusCode)
                 } catch (e: CliktTestCancellation) {
                     throw e.cause
                 }
@@ -52,9 +53,9 @@ suspend fun CliktCommand.test(
             } catch (_: CancellationException) {
                 // Command terminated, so a CancellationException was thrown in TestScope.ignoreOutputs()
             } finally {
-                testConsole.cancel()
+                testTerminalImpl.cancel()
             }
-            testConsole.exitCode.filterNotNull().first() shouldBe expectedExitCode
+            testTerminalImpl.exitCode.filterNotNull().first() shouldBe expectedExitCode
         }
     }
 }

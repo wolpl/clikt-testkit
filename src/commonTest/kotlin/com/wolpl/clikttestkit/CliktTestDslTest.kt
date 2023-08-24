@@ -3,6 +3,7 @@ package com.wolpl.clikttestkit
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
@@ -21,7 +22,7 @@ class CliktTestDslTest : FreeSpec({
         "should run the full example" {
             class Greeter : CliktCommand() {
                 override fun run() {
-                    val name = prompt("Enter your name")
+                    val name = terminal.prompt("Enter your name")
                     echo("Hello $name!")
                     echo("I failed successfully!", err = true)
                     throw ProgramResult(-42)
@@ -63,7 +64,7 @@ class CliktTestDslTest : FreeSpec({
         "should provide input" {
             val command = object : CliktCommand() {
                 override fun run() {
-                    val input = prompt("Input")
+                    val input = terminal.prompt("Input")
                     echo(input)
                 }
             }
@@ -236,7 +237,7 @@ class CliktTestDslTest : FreeSpec({
             "when the command requires input, but the test code called ignoreOutputs()" {
                 class TestCommand : CliktCommand() {
                     override fun run() {
-                        prompt("Input")
+                        terminal.prompt("Input")
                     }
                 }
 
@@ -273,7 +274,7 @@ class CliktTestDslTest : FreeSpec({
                     class TestCommand : CliktCommand() {
                         override fun run() {
                             runBlocking {
-                                prompt("Wrong output")
+                                terminal.prompt("Wrong output")
                             }
                         }
                     }
@@ -291,7 +292,7 @@ class CliktTestDslTest : FreeSpec({
                         override fun run() {
                             runBlocking {
                                 while (true) {
-                                    prompt("Wrong output")
+                                    terminal.prompt("Wrong output")
                                 }
                             }
                         }
@@ -344,7 +345,7 @@ class CliktTestDslTest : FreeSpec({
             "if it tries to get additional input" {
                 class TestCommand : CliktCommand() {
                     override fun run() {
-                        prompt("Prompt text")
+                        terminal.prompt("Prompt text")
                     }
                 }
 

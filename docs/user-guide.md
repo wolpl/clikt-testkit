@@ -9,7 +9,7 @@ The Clikt Testkit allows you to assert standard and error outputs, as well as to
 ```kotlin
 class Greeter : CliktCommand() {
     override fun run() {
-        val name = prompt("Enter your name")
+        val name = terminal.prompt("Enter your name")
         echo("Hello $name!")
         echo("I failed successfully!", err = true)
         throw ProgramResult(-42)
