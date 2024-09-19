@@ -1,9 +1,7 @@
 package com.wolpl.clikttestkit
 
 import arrow.fx.coroutines.resourceScope
-import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.ProgramResult
-import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.core.*
 import com.github.ajalt.mordant.terminal.Terminal
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.*
@@ -36,8 +34,8 @@ suspend fun CliktCommand.test(
                 try {
                     this@test
                         .context {
-                            this.terminal = Terminal(testTerminalImpl)
-                            envvarReader = environmentVariables::get
+                            this.terminal = Terminal(terminalInterface = testTerminalImpl)
+                            readEnvvar = environmentVariables::get
                         }
                         .parse(argv)
                     testTerminalImpl.terminate(0)

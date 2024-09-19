@@ -11,15 +11,20 @@ import kotlinx.coroutines.runBlocking
 
 class TestTerminalInterfaceImpl : TerminalInterface {
 
-    override val info = TerminalInfo(
-            width = 0,
-            height = 0,
+    override fun info(
+        ansiLevel: AnsiLevel?,
+        hyperlinks: Boolean?,
+        outputInteractive: Boolean?,
+        inputInteractive: Boolean?
+    ): TerminalInfo {
+        return TerminalInfo(
             ansiLevel = AnsiLevel.NONE,
             ansiHyperLinks = false,
             outputInteractive = false,
             inputInteractive = false,
-            crClearsLine = false
-    )
+            supportsAnsiCursor = false,
+        )
+    }
 
     private val eventsChannel = Channel<CliEvent>()
     private val promptsChannel = Channel<String>()
