@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
+import com.github.ajalt.mordant.terminal.prompt
 import io.kotest.assertions.shouldFail
 import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.FreeSpec
