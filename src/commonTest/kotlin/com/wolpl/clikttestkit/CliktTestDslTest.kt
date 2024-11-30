@@ -11,7 +11,6 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.mordant.terminal.prompt
 import io.kotest.assertions.shouldFail
-import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.throwable.shouldHaveMessage
 import kotlinx.coroutines.withTimeout
@@ -255,10 +254,8 @@ class CliktTestDslTest : FreeSpec({
                 "once it produces output" {
                     class TestCommand : CliktCommand() {
                         override fun run() {
-                            runBlocking {
-                                while (true) {
-                                    echo("Wrong output")
-                                }
+                            while (true) {
+                                echo("Wrong output")
                             }
                         }
                     }
@@ -274,9 +271,7 @@ class CliktTestDslTest : FreeSpec({
                 "once it expects input" {
                     class TestCommand : CliktCommand() {
                         override fun run() {
-                            runBlocking {
-                                terminal.prompt("Wrong output")
-                            }
+                            terminal.prompt("Wrong output")
                         }
                     }
 
@@ -291,10 +286,8 @@ class CliktTestDslTest : FreeSpec({
                 "repeatedly prompting" {
                     class TestCommand : CliktCommand() {
                         override fun run() {
-                            runBlocking {
-                                while (true) {
-                                    terminal.prompt("Wrong output")
-                                }
+                            while (true) {
+                                terminal.prompt("Wrong output")
                             }
                         }
                     }
