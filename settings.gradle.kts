@@ -9,7 +9,7 @@ dependencyResolutionManagement {
             plugin("versions", "com.github.ben-manes.versions").version("0.51.0")
             plugin("nexus.publish","io.github.gradle-nexus.publish-plugin").version("1.1.0")
 
-            library("clikt", "com.github.ajalt.clikt:clikt:5.0.1")
+            library("clikt", "com.github.ajalt.clikt:clikt:5.0.2")
             library("kotlinx.coroutines", "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
             library("arrow.fx.coroutines", "io.arrow-kt:arrow-fx-coroutines:2.0.0")
 
