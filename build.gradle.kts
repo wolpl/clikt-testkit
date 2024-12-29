@@ -5,6 +5,7 @@ plugins {
     `maven-publish`
     signing
     alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.dokka)
 }
 
 group = "com.wolpl.clikt-testkit"
@@ -60,12 +61,8 @@ nexusPublishing {
     }
 }
 
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-}
-
 publishing {
-    publications.withType<MavenPublication>() {
+    publications.withType<MavenPublication> {
         pom {
             name.set("Clikt Testkit")
             description.set("Testing functions for the Clikt command line parser library.")
@@ -87,7 +84,18 @@ publishing {
                 url.set("https://github.com/wolpl/clikt-testkit")
             }
         }
-        artifact(javadocJar)
+        val dokkaJar = project.tasks.register("${name}DokkaJar", Jar::class) {
+            group = JavaBasePlugin.DOCUMENTATION_GROUP
+            description = "Assembles Kotlin docs with Dokka into a Javadoc jar"
+            archiveClassifier.set("javadoc")
+            from(tasks.named("dokkaHtml"))
+
+            // Each archive name should be distinct, to avoid implicit dependency issues.
+            // We use the same format as the sources Jar tasks.
+            // https://youtrack.jetbrains.com/issue/KT-46466
+            archiveBaseName.set("${archiveBaseName.get()}-${name}")
+        }
+        artifact(dokkaJar)
     }
 }
 
