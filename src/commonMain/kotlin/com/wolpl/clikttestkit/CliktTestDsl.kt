@@ -1,6 +1,5 @@
 package com.wolpl.clikttestkit
 
-import arrow.fx.coroutines.resourceScope
 import com.github.ajalt.clikt.core.*
 import com.github.ajalt.mordant.terminal.Terminal
 import io.kotest.matchers.shouldBe
@@ -20,15 +19,10 @@ suspend fun CliktCommand.test(
     testCode: suspend CliTestScope.() -> Unit
 ) {
     coroutineScope {
-        resourceScope {
+        newSingleThreadContext("clikt-testkit-cli-context").use { cliContext ->
 
             val testTerminalImpl = TestTerminalInterfaceImpl()
             val testScope = MutableCliTestScope(testTerminalImpl)
-
-            val cliContext = install(
-                { newSingleThreadContext("clikt-testkit-cli-context") },
-                { it, _ -> it.close() }
-            )
 
             launch(cliContext) {
                 try {

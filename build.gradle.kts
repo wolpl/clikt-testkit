@@ -28,7 +28,6 @@ kotlin {
                 implementation(libs.clikt)
                 implementation(libs.kotlinx.coroutines)
                 implementation(libs.kotest.assertions.core)
-                implementation(libs.arrow.fx.coroutines)
             }
         }
         val commonTest by getting {

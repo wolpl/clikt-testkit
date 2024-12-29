@@ -11,7 +11,6 @@ dependencyResolutionManagement {
 
             library("clikt", "com.github.ajalt.clikt:clikt:5.0.2")
             library("kotlinx.coroutines", "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
-            library("arrow.fx.coroutines", "io.arrow-kt:arrow-fx-coroutines:2.0.0")
 
             version("kotest", "6.0.0.M1")
             plugin("kotest", "io.kotest.multiplatform").versionRef("kotest")
