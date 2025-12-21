@@ -1,5 +1,6 @@
 package com.wolpl.clikttestkit
 
+import com.github.ajalt.clikt.command.SuspendingCliktCommand
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.ProgramResult
 import com.github.ajalt.clikt.core.subcommands
@@ -351,6 +352,26 @@ class CliktTestDslTest : FreeSpec({
                     }
                     assertionError.printStackTrace()
                     assertionError shouldHaveMessage "CliktCommand expected input, but test code did not provide any!"
+                }
+            }
+        }
+
+        "when running a suspending command" - {
+            "should run the full example with a suspend command" {
+                class Greeter : SuspendingCliktCommand() {
+                    override suspend fun run() {
+                        val name = terminal.prompt("Enter your name")
+                        echo("Hello $name!")
+                        echo("I failed successfully!", err = true)
+                        throw ProgramResult(-42)
+                    }
+                }
+
+                Greeter().test(expectedExitCode = -42) {
+                    expectOutput("Enter your name: ")
+                    provideInput("Tester")
+                    expectOutput("Hello Tester!")
+                    expectErrorOutput("I failed successfully!")
                 }
             }
         }
