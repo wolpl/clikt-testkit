@@ -25,20 +25,20 @@ kotlin {
     mingwX64()
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(libs.clikt)
                 implementation(libs.kotlinx.coroutines)
                 implementation(libs.kotest.assertions.core)
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(libs.kotest.framework.engine)
             }
         }
-        val jvmMain by getting
-        val jvmTest by getting {
+
+        jvmTest {
             dependencies {
                 implementation(libs.kotest.runner.junit5)
             }
@@ -89,7 +89,7 @@ publishing {
             group = JavaBasePlugin.DOCUMENTATION_GROUP
             description = "Assembles Kotlin docs with Dokka into a Javadoc jar"
             archiveClassifier.set("javadoc")
-            from(tasks.named("dokkaHtml"))
+            from(tasks.named("dokkaGenerateHtml"))
 
             // Each archive name should be distinct, to avoid implicit dependency issues.
             // We use the same format as the sources Jar tasks.
