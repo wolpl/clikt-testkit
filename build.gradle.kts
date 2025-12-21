@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.versions)
     alias(libs.plugins.kotest)
+    alias(libs.plugins.ksp)
     `maven-publish`
     signing
     alias(libs.plugins.nexus.publish)
