@@ -3,9 +3,7 @@ plugins {
     alias(libs.plugins.versions)
     alias(libs.plugins.kotest)
     alias(libs.plugins.ksp)
-    `maven-publish`
-    signing
-    alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.maven.publish)
     alias(libs.plugins.dokka)
 }
 
@@ -53,60 +51,29 @@ tasks.named<Test>("jvmTest") {
     }
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+    coordinates(group.toString(), "clikt-testkit", version.toString())
+    pom {
+        name.set("Clikt Testkit")
+        description.set("Testing functions for the Clikt command line parser library.")
+        url.set("https://github.com/wolpl/clikt-testkit")
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://www.opensource.org/licenses/mit-license.php")
+            }
         }
-    }
-}
+        developers {
+            developer {
+                id.set("wolpl")
+                url.set("https://github.com/wolpl")
+            }
+        }
 
-publishing {
-    publications.withType<MavenPublication> {
-        pom {
-            name.set("Clikt Testkit")
-            description.set("Testing functions for the Clikt command line parser library.")
+        scm {
             url.set("https://github.com/wolpl/clikt-testkit")
-            licenses {
-                license {
-                    name.set("MIT License")
-                    url.set("https://www.opensource.org/licenses/mit-license.php")
-                }
-            }
-            developers {
-                developer {
-                    id.set("wolpl")
-                    url.set("https://github.com/wolpl")
-                }
-            }
-
-            scm {
-                url.set("https://github.com/wolpl/clikt-testkit")
-            }
         }
-        val dokkaJar = project.tasks.register("${name}DokkaJar", Jar::class) {
-            group = JavaBasePlugin.DOCUMENTATION_GROUP
-            description = "Assembles Kotlin docs with Dokka into a Javadoc jar"
-            archiveClassifier.set("javadoc")
-            from(tasks.named("dokkaGenerateHtml"))
-
-            // Each archive name should be distinct, to avoid implicit dependency issues.
-            // We use the same format as the sources Jar tasks.
-            // https://youtrack.jetbrains.com/issue/KT-46466
-            archiveBaseName.set("${archiveBaseName.get()}-${name}")
-        }
-        artifact(dokkaJar)
     }
-}
-
-val signingKey: String? by project
-signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
-    if (signingKey != null) {
-        println("Signing key is set.")
-        useInMemoryPgpKeys(signingKey, signingPassword)
-    }
-    sign(publishing.publications)
 }

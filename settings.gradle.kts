@@ -10,6 +10,7 @@ dependencyResolutionManagement {
 
             plugin("versions", "com.github.ben-manes.versions").version("0.53.0")
             plugin("nexus.publish","io.github.gradle-nexus.publish-plugin").version("2.0.0")
+            plugin("maven.publish","com.vanniktech.maven.publish").version("0.35.0")
 
 
             library("clikt", "com.github.ajalt.clikt:clikt:5.0.3")
