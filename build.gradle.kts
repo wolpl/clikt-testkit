@@ -8,14 +8,14 @@ plugins {
 }
 
 group = "com.wolpl.clikt-testkit"
-version = "3.2.0-SNAPSHOT"
+version = "3.1.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(11)
 
     jvm()
     macosX64()
