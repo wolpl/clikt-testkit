@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.wolpl.clikt-testkit"
-version = "3.1.0-SNAPSHOT"
+version = "3.1.0"
 
 repositories {
     mavenCentral()
