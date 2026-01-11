@@ -7,15 +7,37 @@ on:
       - v*
   workflow_dispatch:
 
+env:
+  ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+  ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+  ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
+
 jobs:
+  check-signing-config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - name: Run tests
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: checkSigningConfiguration
+          cache-read-only: ${{ github.ref != 'refs/tags/snapshot' }}
   test:
+    needs: check-signing-config
     timeout-minutes: 20
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ macos-latest, windows-latest ]
         include:
-          - os: ubuntu-latest
-            TEST_TASK: jvmTest linuxX64Test
+          - os: macos-latest
+            TEST_TASK: macosX64Test
           - os: windows-latest
             TEST_TASK: mingwX64Test
     runs-on: ${{matrix.os}}
@@ -42,7 +64,7 @@ jobs:
         path: build-reports.zip
   publish:
     needs: test
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -54,18 +76,13 @@ jobs:
       - name: Run tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: macosX64Test
+          arguments: jvmTest linuxX64Test
           cache-read-only: ${{ github.ref != 'refs/tags/snapshot' }}
       - name: Publish
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: publishToSonatype
+          arguments: publishAllPublicationsToMavenCentralRepository
           cache-read-only: ${{ github.ref != 'refs/tags/snapshot' }}
-        env:
-          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.ORG_GRADLE_PROJECT_SONATYPE_USERNAME }}
-          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.ORG_GRADLE_PROJECT_SONATYPE_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGKEY }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD }}
       - name: Bundle the build report
         if: failure()
         run: find . -type d -name 'reports' | zip -@ -r build-reports.zip
